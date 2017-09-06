@@ -6,6 +6,7 @@ class Stopwatch extends Component {
     // initial state
     super(props)
     this.state = {
+      firstStart: false,
       isStart: false,
       timer: 0,
     }
@@ -17,6 +18,7 @@ class Stopwatch extends Component {
     // on start click set start to true and add 1 to timer every second
     this.counter = setInterval( (event) =>
     this.setState({
+      firstStart: true,
       isStart: true,
       timer: this.state.timer + 1 }), 1000)
     }
@@ -46,19 +48,26 @@ class Stopwatch extends Component {
   }
 
   render() {
-    let stopwatch
-    if (this.state.timer === 0) {
-      stopwatch = <span>{this.state.timer}</span>
-    } else {
-      stopwatch = this.state.timer
+    let controls;
+    if (this.state.firstStart === false ){
+      controls =
+      <div className="controls">
+      <button onClick={this.onStartClick}>Start</button>
+      </div>
+    }
+    else {
+      controls =
+      <div className="controls">
+      <button onClick={this.onResetClick}>Reset</button>
+      <button onClick={this.onStartClick}>Start</button>
+      <button onClick={this.onPauseClick}>Pause</button>
+      </div>
     }
     return (
       <div className="stopwatch">
-        <h1>{stopwatch}</h1>
-        <div className="controls">
-          <button onClick={this.onResetClick}>Reset</button>
-          <button onClick={this.onStartClick}>Start</button>
-          <button onClick={this.onPauseClick}>Pause</button>
+        <h1>{this.state.timer ? this.state.timer : <span>{this.state.timer}</span>}</h1>
+        <div>
+          {controls}
         </div>
       </div>
     );
